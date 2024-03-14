@@ -6,7 +6,7 @@ from dotenv import *
 dotenv.config()
 
 def start(update, context):
-  welcome_message = "Hallo, Perkenalkan Saya CapekBOT yang digunakan untuk Generate berita, kutipan dan Gempa Terkini.\n ~Developed by @ISB"
+  welcome_message = "Hallo, Perkenalkan Saya ThunderFlashBot yang digunakan untuk Generate berita, kutipan dan Gempa Terkini.\n ~Developed by @ISB"
   update.message.reply_text(welcome_message)
   
 def news(update, context):
