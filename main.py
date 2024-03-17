@@ -2,6 +2,8 @@ import requests
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, MessageHandler, Filters
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 import random
+import os
+from removebg import RemoveBg
 from dotenv import *
 dotenv.config()
 
@@ -226,7 +228,11 @@ def main():
     updater.dispatcher.add_handler(CommandHandler("movie", movie_recommendation))
     updater.dispatcher.add_handler(CommandHandler("followme", follow))
     updater.dispatcher.add_handler(MessageHandler(Filters.command, unkown_commands))
-    updater.dispatcher.add_handler(CallbackQueryHandler(click_button))
+
+updater.dispatcher.add_handler(CallbackQueryHandler(click_button))
+
+updater.dispatcher.add_handler(MessageHandler(Filters.photo & ~Filters.command, process_photo))
+
 
     updater.start_polling()
     updater.idle()
