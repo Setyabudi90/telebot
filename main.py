@@ -190,6 +190,30 @@ def quotes(update, context):
     else:
         update.message.reply_text('Gagal mengambil kutipan.')
 
+def process_photo(update, context):
+   update.message.reply_text("Processing...")
+    if update.message.caption == '/remove_bg':
+        API_KEY = process.env.RMBG_API_KEY
+        removebg = RemoveBg(API_KEY,          "error.log")
+        photo_file = context.bot.get_file(update.message.photo[-1].file_id)
+        file_extension = photo_file.file_path.split('.')[-1]
+        photo_path = f"remove/input_photo.{file_extension}"
+        photo_file.download(photo_path)
+        removebg.remove_background_from_img_file(photo_path)
+        result_path = f"remove/input_photo.jpg_no_bg.png"
+        
+        with open(result_path, "rb") as file:
+         context.bot.send_photo(chat_id=update.effective_chat.id, photo=file, caption="Result.")
+        
+        try:
+            os.remove(photo_path)
+            os.remove(result_path)
+        except Exception as e:
+            update.message.reply_text(f"Error saat menghapus file server side: {e}")
+    else:
+        update.message.reply_text("Kirimkan foto dengan caption /remove_bg untuk menghapus latar belakangnya.")
+
+
 def main():
     TOKEN=process.env.TELEGRAMBOT_TOKEN
     updater = Updater(TOKEN, use_context=True)
