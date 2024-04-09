@@ -4,8 +4,8 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 import random
 import os
 from removebg import RemoveBg
-from dotenv import *
-dotenv.config()
+from dotenv import load_env
+load_env()
 
 def start(update, context):
   welcome_message = "Hallo, Perkenalkan Saya ThunderFlashBot yang digunakan untuk Generate berita, kutipan dan Gempa Terkini.\n ~Developed by @ISB"
@@ -50,7 +50,7 @@ def news(update, context):
         
 def movie_recommendation(update, context):
     update.message.reply_text("Memuat data untuk film yang populer, sedang tayang, dan direkomendasikan...")
-    api_key = process.env.TMDB_API_KEY
+    api_key = os.getenv("TMDB_API_KEY")
 
     popular_movies_url = f"https://api.themoviedb.org/3/movie/top_rated?api_key={api_key}&language=en-US&page=1"
     popular_response = requests.get(popular_movies_url)
@@ -195,7 +195,7 @@ def quotes(update, context):
 def process_photo(update, context):
    update.message.reply_text("Processing...")
     if update.message.caption == '/remove_bg':
-        API_KEY = process.env.RMBG_API_KEY
+        API_KEY = os.getenv("RMBG_API_KEY")
         removebg = RemoveBg(API_KEY,          "error.log")
         photo_file = context.bot.get_file(update.message.photo[-1].file_id)
         file_extension = photo_file.file_path.split('.')[-1]
